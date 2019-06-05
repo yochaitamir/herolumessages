@@ -9,7 +9,7 @@ Django==2.1.7
 django-heroku==0.3.1
 gunicorn==19.9.0
 idna==2.8
-menuinst==1.4.14
+# menuinst==1.4.14
 psycopg2==2.8.2
 pycosat==0.6.3
 pycparser==2.19
