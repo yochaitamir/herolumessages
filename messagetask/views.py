@@ -21,14 +21,31 @@ def write_message(request):
         message.read=False
         message.save()
         return HttpResponse("message was created successfully")
-def get_all_messages(request,user):
-    messages=Messages.objects.filter(reciever=user)
-    qs_json = serializers.serialize('json', messages)
-    for x in messages:
-        x.creation_date=x.creation_date
-        x.read=True
-        x.save()
-    return HttpResponse(qs_json, content_type='application/json')
+# def get_all_messages(request,user):
+#     messages=Messages.objects.filter(reciever=user)
+#     qs_json = serializers.serialize('json', messages)
+#     for x in messages:
+#         x.creation_date=x.creation_date
+#         x.read=True
+#         x.save()
+#     return HttpResponse(qs_json, content_type='application/json')
+def get_all_messages(request):
+    if request.method == 'POST':
+        username= request.POST.get('username')
+        password= request.POST.get('password')
+        user=authenticate(username=username,password=password)
+        
+        if user:
+            messages=Messages.objects.filter(reciever=user)
+            qs_json = serializers.serialize('json', messages)
+            for x in messages:
+                x.creation_date=x.creation_date
+                x.read=True
+                x.save()
+            return HttpResponse(qs_json, content_type='application/json') 
+        else:
+            return HttpResponse("no authenticated user")
+
 def get_all_unread_messages(request,user):
     messages=Messages.objects.filter(reciever=user,read=False)
     qs_json = serializers.serialize('json', messages)
