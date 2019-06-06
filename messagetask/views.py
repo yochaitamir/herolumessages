@@ -14,17 +14,20 @@ def index(request):
 @csrf_exempt
 def write_message(request):
     if request.method == 'POST':
-        message = Messages()
-        sender=User.objects.get(username=request.POST.get('sender'))
-        reciever=User.objects.get(username=request.POST.get('reciever'))
-        message.sender= sender
-        message.reciever= reciever
-        message.message= request.POST.get('message')
-        message.subject= request.POST.get('subject')
-        message.creation_date= datetime.now()
-        message.read=False
-        message.save()
-        return HttpResponse("message was created successfully")
+        try:
+            message = Messages()
+            sender=User.objects.get(username=request.POST.get('sender'))
+            reciever=User.objects.get(username=request.POST.get('reciever'))
+            message.sender= sender
+            message.reciever= reciever
+            message.message= request.POST.get('message')
+            message.subject= request.POST.get('subject')
+            message.creation_date= datetime.now()
+            message.read=False
+            message.save()
+            return HttpResponse("message was created successfully")
+        except:
+            return HttpResponse("Either sender or reciever dont exist in the data-base")
 # def get_all_messages(request,user):
 #     messages=Messages.objects.filter(reciever=user)
 #     qs_json = serializers.serialize('json', messages)
