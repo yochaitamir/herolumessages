@@ -40,7 +40,7 @@ def write_message(request):
 def get_all_messages(request):
     user=request.user
     print(request.user)
-    if request.user:
+    if  not user.is_anonymous:
         messages=Messages.objects.filter(reciever=user)
         qs_json = serializers.serialize('json', messages)
         for x in messages:
