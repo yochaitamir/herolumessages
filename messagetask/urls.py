@@ -10,4 +10,5 @@ url(r'^get_all_messages/$',views.get_all_messages,name='get_all_messages'),
 # url(r'^get_all_messages/(?P<user>\w+)/$',views.get_all_messages,name='get_all_messages'),
 url(r'^get_all_unread_messages/(?P<user>\w+)/$',views.get_all_unread_messages,name='get_all_unread_messages'),
 url(r'^delete_message/(?P<mpk>\d+)/(?P<user>\w+)/$',views.delete_message,name='delete_message'),
+url(r'^login/$',views.login,name='login'),
 ]
