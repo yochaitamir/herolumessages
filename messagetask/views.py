@@ -14,8 +14,10 @@ def index(request):
 def write_message(request):
     if request.method == 'POST':
         message = Messages()
-        message.sender= request.POST.get('sender')
-        message.reciever= request.POST.get('reciever')
+        sender=User.objects.get(username=request.POST.get('sender'))
+        reciever=User.objects.get(username=request.POST.get('reciever'))
+        message.sender= sender
+        message.reciever= reciever
         message.message= request.POST.get('message')
         message.subject= request.POST.get('subject')
         message.creation_date= datetime.now()
