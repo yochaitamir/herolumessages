@@ -6,6 +6,7 @@ from django.db.models import Case, CharField, Value, When
 from django.core import serializers
 from datetime import datetime
 from django.contrib.auth.models import User
+from django.contrib.auth import login as auth_login
 from django.contrib.auth import authenticate
 from django.views.decorators.csrf import csrf_exempt
 # Create your views here.
@@ -41,9 +42,9 @@ def get_all_messages(request):
     if request.method == 'POST':
         username= request.POST.get('username')
         password= request.POST.get('password')
-        user=authenticate(username=username,password=password)
-        
-        if user:
+        user=request.user
+        print(request.user)
+        if request.user:
             messages=Messages.objects.filter(reciever=user)
             qs_json = serializers.serialize('json', messages)
             for x in messages:
@@ -53,7 +54,6 @@ def get_all_messages(request):
             return HttpResponse(qs_json, content_type='application/json') 
         else:
             return HttpResponse("no authenticated user")
-
 def get_all_unread_messages(request,user):
     messages=Messages.objects.filter(reciever=user,read=False)
     qs_json = serializers.serialize('json', messages)
@@ -75,4 +75,15 @@ def delete_message(request,mpk,user):
         return HttpResponse("Deleted successfully")
     except:
         return HttpResponse("Cannot Delete!!!")
+@csrf_exempt
+def login(request):
+    if request.method == 'POST':
+        username= request.POST.get('username')
+        password= request.POST.get('password')
+        user=authenticate(username=username,password=password)
+        if user:
+            auth_login(request,user)
+            return HttpResponse(user) 
+        else:
+            return HttpResponse("no authenticated user")
     
