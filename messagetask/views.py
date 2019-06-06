@@ -29,6 +29,7 @@ def write_message(request):
 #         x.read=True
 #         x.save()
 #     return HttpResponse(qs_json, content_type='application/json')
+@csrf_exempt
 def get_all_messages(request):
     if request.method == 'POST':
         username= request.POST.get('username')
