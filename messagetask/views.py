@@ -11,7 +11,7 @@ from django.contrib.auth import authenticate
 from django.views.decorators.csrf import csrf_exempt
 # Create your views here.
 def index(request):
-    return HttpResponse("Hello World")
+    return HttpResponse("Hello User")
 @csrf_exempt
 def write_message(request):
     if request.method == 'POST':
@@ -29,14 +29,6 @@ def write_message(request):
             return HttpResponse("message was created successfully")
         except:
             return HttpResponse("Either sender or reciever dont exist in the data-base")
-# def get_all_messages(request,user):
-#     messages=Messages.objects.filter(reciever=user)
-#     qs_json = serializers.serialize('json', messages)
-#     for x in messages:
-#         x.creation_date=x.creation_date
-#         x.read=True
-#         x.save()
-#     return HttpResponse(qs_json, content_type='application/json')
 def get_all_messages(request):
     user=request.user
     print(request.user)
@@ -81,5 +73,5 @@ def login(request):
             auth_login(request,user)
             return HttpResponse(user) 
         else:
-            return HttpResponse("no authenticated user")
+            return HttpResponse("Username or Password are inncorrect")
     
